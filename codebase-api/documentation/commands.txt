@@ -1,0 +1,42 @@
+# create new symfony app
+>> symfony new phone-book-api --version="6.1.*"
+
+# installing doctrine orm
+>> composer require symfony/orm-pack: *
+>> composer require --dev symfony/maker-bundle
+
+# creating Contact entity and migration
+>> php bin/console doctrine:database:create
+>> php bin/console make:entity
+>> php bin/console make:migration
+>> php bin/console doctrine:migrations:migrate
+
+# create controller
+>> php bin/console make:controller ContactController
+
+# create fixtures to add some dummy data for contact table
+>> composer require --dev orm-fixtures
+>> php bin/console make:fixture ContactFixture
+>> php bin/console doctrine:fixtures:load
+
+# create Fake (Mock) data for fixtures
+>> composer require fzaninotto/faker --dev
+
+# create Tests (Unit Tests & Functional Tests):
+>> composer require --dev phpunit/phpunit symfony/test-pack
+>> composer require --dev doctrine/doctrine-fixtures-bundle dama/doctrine-test-bundle
+
+>> php bin/console make:test 
+>> php bin/phpunit
+
+# api serialization
+# >> composer require symfony/serializer-pack
+
+# change APP_ENV=test and execute this command to create test database
+>> php bin/console doctrine:database:create
+# or use these commands to create databse in test mode and create entity tables
+>> php app/console doctrine:database:create --env=test
+>> php app/console doctrine:schema:create --env=test
+
+# test validation of json response
+# >> composer require justinrainbow/json-schema
