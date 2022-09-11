@@ -4,10 +4,10 @@ This is a RESTful API based on Symfony `6.1` that serves the following actions t
 
 ## Supported actions in `phone-book-api`
 
-- `Add other customers as contact`,
-- `Edit created contacts.`,
-- `Delete existing contacts`,
-- `Search for contacts by name`,
+- `Add other customers as contact`
+- `Edit created contacts`
+- `Delete existing contacts`
+- `Search for contacts by name`
 
 # Installation
 
@@ -25,7 +25,7 @@ There are two options to install this API and make it ready to use:
 
         $ docker compose up -d
 
-4.  That's it. Enjoy using API and read the next section to know what docker provides.
+4.  That's it. Enjoy using API ;) and read the next section to know what docker provides.
 
 ### What docker provides for us:
 
@@ -87,6 +87,12 @@ There are two options to install this API and make it ready to use:
     to load `fixture` for `test` environment:
 
         $ php bin/console doctrine:fixtures:load --env=test
+
+## Run TestCases:
+
+To run automated tests of the project, first change the directory to point to `/codebase-api` and then run below command:
+
+    $ php bin/phpunit
 
 ## API Routes:
 

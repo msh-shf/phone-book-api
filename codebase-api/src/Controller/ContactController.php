@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 
-#[Route('/api', name: 'api')]
 class ContactController extends BaseController
 {
     #[Route('/contact', name: 'contact_index', methods: ["GET"])]
