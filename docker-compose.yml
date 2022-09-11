@@ -17,11 +17,11 @@ services:
       - ./docker/server/php/php.ini:/usr/local/etc/php/conf.d/extra-php-config.ini
       - ./docker/server/logs:/var/log/nginx
       - ./docker/server/scripts:/scripts
-    # command: >
-    #   /bin/sh "/scripts/init-data-test.sh" &&
-    #   /bin/sh "/scripts/init-data-dev.sh" &&
-    #   /bin/sh "/scripts/composer.sh" &&
-    #   /bin/sh "/scripts/run-tests.sh"
+    command: >
+      /bin/sh "/scripts/composer.sh" &&
+      /bin/sh "/scripts/init-data-test.sh" &&
+      /bin/sh "/scripts/init-data-dev.sh" &&
+    #/bin/sh "/scripts/run-tests.sh"
     depends_on:
       - db_server
     networks:
