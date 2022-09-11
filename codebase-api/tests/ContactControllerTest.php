@@ -48,6 +48,29 @@ class ContactControllerTest extends WebTestCase
         $this->assertEquals(1, $data['id']);
     }
 
+    public function testCreateContact(): void {
+        $client = static::createClient();
+        $crawler = $client->request('POST', '/api/contact', [], [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode([
+                "first_name" => "Masih",
+                "last_name" => "Shafiee",
+                "phone" => "+3165214782",
+                "email" => "masih118shafiee@gmail.com",
+                "birthday" => "1989-10-06",
+                "address" => "",
+                "picture" => ""
+            ]),
+        );
+
+        $content = $this->testJsonContent($client);
+
+        $data = json_decode($content, true);
+
+        $this->assertArrayHasKey('id', $data);
+        $this->assertEquals('Masih', $data['first_name']);
+    }
+
     public function testUpdateContact(): void {
         $client = static::createClient();
         $crawler = $client->request('PUT', '/api/contact/1', [], [],

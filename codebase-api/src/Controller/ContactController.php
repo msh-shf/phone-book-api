@@ -21,9 +21,9 @@ class ContactController extends BaseController
 
         /** @var ContactRepository $contactRepository */
         $contactRepository = $doctrine->getRepository(Contact::class);
-        $data = $contactRepository->findByName($name, $page, $size);
+        $paginatedData = $contactRepository->findByName($name, $page, $size);
 
-        return $this->json($data->asArray());
+        return $this->successJsonResponse($paginatedData->asArray());
     }
 
     #[Route('/contact', name: 'contact_create', methods: ["POST"])]
@@ -36,10 +36,7 @@ class ContactController extends BaseController
         $contactRepository = $doctrine->getRepository(Contact::class);
         $contactRepository->add($contact, true);
 
-        return $this->json([
-            'message' => 'The Contact created successfully!',
-            'data' => $contact->getId()
-        ], 201);
+        return $this->successJsonResponse($contact->getId(), 201);
     }
 
     #[Route('/contact/{id}', name: 'contact_update', methods: ["PUT"])]
@@ -57,7 +54,7 @@ class ContactController extends BaseController
 
         $doctrine->getManager()->flush();
 
-        return $this->json($contact->asArray());
+        return $this->successJsonResponse($contact->asArray());
     }
 
     #[Route('/contact/{id}', name: 'contact_show', methods: ["GET"])]
@@ -70,7 +67,7 @@ class ContactController extends BaseController
             return $this->notFoundJsonResponse($id);
         }
 
-        return $this->json($contact->asArray());
+        return $this->successJsonResponse($contact->asArray());
     }
 
     #[Route('/contact/{id}', name: 'contact_delete', methods: ["DELETE"])]
@@ -88,9 +85,6 @@ class ContactController extends BaseController
 
         $contactRepository->remove($contact, true);
 
-        return $this->json([
-            'message' => 'The Contact deleted successfully!',
-            'data' => $id
-        ], 204);
+        return $this->successJsonResponse($id, 204);
     }
 }

@@ -3,11 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Contact;
-use App\Pagination;
+use App\Services\Pagination;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @extends ServiceEntityRepository<Contact>

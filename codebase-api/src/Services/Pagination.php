@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Services;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -19,7 +19,7 @@ class Pagination
 
     public static function create(ArrayCollection $content, int $total, int $page = 0, int $size = 10): Pagination
     {
-        $pagination = new Pagination();
+        $pagination = new self();
         $pagination->setContent($content)
             ->setTotal($total)
             ->setPage($page)
@@ -77,11 +77,16 @@ class Pagination
     }
 
     public function asArray(): array {
+        $lastPage = ceil($this->getTotal() / $this->getSize());
         return [
             'data' => $this->getContent()->toArray(),
-            'total' => $this->getTotal(),
-            'page' => $this->getPage(),
-            'size' => $this->getSize()
+            'meta' => [
+                'total' => $this->getTotal(),
+                'page' => $this->getPage(),
+                'size' => $this->getSize(),
+                'next' => $this->getPage() < $lastPage ? $this->getPage() + 1 : null,
+                'last' => $lastPage
+            ],
         ];
     }
 
