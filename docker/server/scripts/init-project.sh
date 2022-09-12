@@ -7,4 +7,4 @@ rm composer.lock
 composer install --prefer-dist --no-progress
 
 # To Generate JWT public and private keys
-php bin/console lexik:jwt:generate-keypair
+echo 'yes' | php bin/console lexik:jwt:generate-keypair --overwrite
