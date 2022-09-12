@@ -20,8 +20,7 @@ services:
     command: >
       /bin/sh "/scripts/init-project.sh" &&
       /bin/sh "/scripts/load-data-dev.sh" &&
-      /bin/sh "/scripts/load-data-test.sh" &&
-    #/bin/sh "/scripts/run-tests.sh"
+      /bin/sh "/scripts/load-data-test.sh"
     depends_on:
       - db_server
     networks:
