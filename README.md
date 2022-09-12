@@ -1,6 +1,6 @@
 # Phone Book API (phone-book-api)
 
-This is a RESTful API based on Symfony `6.1` that serves the following actions to use by frontend phone-book-ui project:
+This is a RESTful API based on Symfony `6.1` with `JWT` authentication strategy that serves the following actions to use by frontend phone-book-ui project:
 
 ## Supported actions in `phone-book-api`
 
@@ -87,6 +87,10 @@ There are two options to install this API and make it ready to use:
     to load `fixture` for `test` environment:
 
         $ php bin/console doctrine:fixtures:load --env=test
+
+    To Generate JWT public and private keys
+
+        $ php bin/console lexik:jwt:generate-keypair --overwrite
 
 ## Run TestCases:
 
