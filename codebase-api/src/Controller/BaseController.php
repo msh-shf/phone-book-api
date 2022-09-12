@@ -14,7 +14,7 @@ class BaseController extends AbstractController
         return $this->errorJsonResponse($message, 404);
     }
 
-    public function successJsonResponse($data, $status_code = 200) {
+    public function successJsonResponse($data = null, $status_code = 200) {
         return $this->json([
             'status' => self::STATUS_SUCCESS,
             'data' => $data,
