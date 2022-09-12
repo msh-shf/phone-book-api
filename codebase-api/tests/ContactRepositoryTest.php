@@ -4,7 +4,6 @@ namespace App\Tests;
 
 use App\Entity\Contact;
 use App\EntityFactory\ContactFactory;
-use App\Repository\ContactRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -31,25 +30,27 @@ class ContactRepositoryTest extends KernelTestCase
     public function testCreateContact(): void
     {
         $entity = ContactFactory::create([
-            'first_name' => 'Masih',
-            'last_name' => 'Shafiee',
-            'phone' => '+989367237614',
-            'email' => 'masih118shafiee@gmail.com',
+            'first_name' => 'David',
+            'last_name' => 'Carter',
+            'phone' => '+12345678900',
+            'email' => 'example@gmail.com',
             'birthday' => '1989-10-06',
-            'address' => 'Mashhad, Iran',
+            'address' => 'Berline, Germany',
             'picture' => ''
         ]);
 
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
 
-        $this->assertNotNull($entity->getId());
+        $insertedId = $entity->getId();
+        $this->assertNotNull($insertedId);
 
+        /** @var Contact $contact */
         $contact = $this->entityManager
             ->getRepository(Contact::class)
-            ->findOneBy(["id" => $entity->getId()]);
+            ->findOneBy(["id" => $insertedId]);
 
-        $this->assertEquals("Masih", $contact->getFirstName());
-        $this->assertEquals("Shafiee", $contact->getLastName());
+        $this->assertEquals($insertedId, $contact->getId());
+        $this->assertEquals("David", $contact->getFirstName());
     }
 }

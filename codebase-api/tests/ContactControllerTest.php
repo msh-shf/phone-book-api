@@ -9,71 +9,71 @@ class ContactControllerTest extends WebTestCase
     public function testGetContactList(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/api/contact?page=1&size=2');
+        $client->request('GET', '/api/contact?page=1&size=2');
 
-        $content = $this->testJsonContent($client);
+        $content = $this->_testJsonContent($client);
 
         $data = json_decode($content, true);
-
         $this->assertArrayHasKey('data', $data);
 
-        $this->assertCount(2, $data['data']);
-        $this->assertEquals(5, $data['total']);
+        $this->assertCount(2, $data['data']['data']);
+        $this->assertEquals(5, $data['data']['meta']['total']);
     }
 
     public function testSearchContactByName(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/api/contact?name=Sandy');
+        $client->request('GET', '/api/contact?name=Sandy');
 
-        $content = $this->testJsonContent($client);
+        $content = $this->_testJsonContent($client);
 
         $data = json_decode($content, true);
-
         $this->assertArrayHasKey('data', $data);
 
-        $this->assertCount(1, $data['data']);
-        $this->assertEquals(1, $data['total']);
+        $this->assertCount(1, $data['data']['data']);
+        $this->assertEquals(1, $data['data']['meta']['total']);
     }
 
     public function testShowContact(): void {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/api/contact/1');
+        $client->request('GET', '/api/contact/1');
 
-        $content = $this->testJsonContent($client);
+        $content = $this->_testJsonContent($client);
 
         $data = json_decode($content, true);
+        $this->assertArrayHasKey('data', $data);
 
-        $this->assertArrayHasKey('id', $data);
-        $this->assertEquals(1, $data['id']);
+        $this->assertArrayHasKey('id', $data['data']);
+        $this->assertEquals(1, $data['data']['id']);
     }
 
     public function testCreateContact(): void {
         $client = static::createClient();
-        $crawler = $client->request('POST', '/api/contact', [], [],
+        $client->request('POST', '/api/contact', [], [],
             ['CONTENT_TYPE' => 'application/json'],
             json_encode([
-                "first_name" => "Masih",
-                "last_name" => "Shafiee",
+                "first_name" => "James",
+                "last_name" => "Carter",
                 "phone" => "+3165214782",
-                "email" => "masih118shafiee@gmail.com",
+                "email" => "example@gmail.com",
                 "birthday" => "1989-10-06",
                 "address" => "",
                 "picture" => ""
             ]),
         );
 
-        $content = $this->testJsonContent($client);
+        $content = $this->_testJsonContent($client);
 
         $data = json_decode($content, true);
+        $this->assertArrayHasKey('data', $data);
 
-        $this->assertArrayHasKey('id', $data);
-        $this->assertEquals('Masih', $data['first_name']);
+        $this->assertArrayHasKey('id', $data['data']);
+        $this->assertEquals('James', $data['data']['first_name']);
     }
 
     public function testUpdateContact(): void {
         $client = static::createClient();
-        $crawler = $client->request('PUT', '/api/contact/1', [], [],
+        $client->request('PUT', '/api/contact/1', [], [],
             ['CONTENT_TYPE' => 'application/json'],
             json_encode([
                 'first_name' => 'David',
@@ -81,22 +81,23 @@ class ContactControllerTest extends WebTestCase
             ]),
         );
 
-        $content = $this->testJsonContent($client);
+        $content = $this->_testJsonContent($client);
 
         $data = json_decode($content, true);
+        $this->assertArrayHasKey('data', $data);
 
-        $this->assertArrayHasKey('id', $data);
-        $this->assertEquals('David', $data['first_name']);
+        $this->assertArrayHasKey('id', $data['data']);
+        $this->assertEquals('David', $data['data']['first_name']);
     }
 
     public function testDeleteContact(): void {
         $client = static::createClient();
-        $crawler = $client->request('DELETE', '/api/contact/1');
+        $client->request('DELETE', '/api/contact/1');
 
         $this->assertEquals(204, $client->getResponse()->getStatusCode());
     }
 
-    private function testJsonContent($client) {
+    private function _testJsonContent($client) {
         $this->assertResponseIsSuccessful();
 
         // Assert that return content type is application/json

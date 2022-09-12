@@ -43,13 +43,17 @@ class ContactRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByName(string $name, int $page = 1, int $size = 20): Pagination
+    public function findByName(string $name = '', int $page = 1, int $size = 20): Pagination
     {
         $offset = ($page - 1) * $size;
 
-        $query = $this->createQueryBuilder("c")
-            ->andWhere("CONCAT(c.first_name, ' ', c.last_name) LIKE :name")
-            ->setParameter('name', "%" . $name . "%")
+        $queryBuilder = $this->createQueryBuilder("c");
+        if(!empty($name)) {
+            $queryBuilder->andWhere("CONCAT(c.first_name, ' ', c.last_name) LIKE :name")
+                ->setParameter('name', "%" . $name . "%");
+        }
+        $query =
+            $queryBuilder
             ->orderBy('c.created_at', 'DESC')
             ->setMaxResults($size)
             ->setFirstResult($offset)

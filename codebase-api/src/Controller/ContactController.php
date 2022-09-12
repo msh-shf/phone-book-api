@@ -15,13 +15,11 @@ class ContactController extends BaseController
     #[Route('/contact', name: 'contact_index', methods: ["GET"])]
     public function index(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
-        $name = $request->query->get('name') ?? '';
-        $page = $request->query->get('page') ?? 1;
-        $size = $request->query->get('size') ?? 10;
+        $searchParams = $this->_getSearchParams($request);
 
         /** @var ContactRepository $contactRepository */
         $contactRepository = $doctrine->getRepository(Contact::class);
-        $paginatedData = $contactRepository->findByName($name, $page, $size);
+        $paginatedData = $contactRepository->findByName(...$searchParams);
 
         return $this->successJsonResponse($paginatedData->asArray());
     }
@@ -36,7 +34,7 @@ class ContactController extends BaseController
         $contactRepository = $doctrine->getRepository(Contact::class);
         $contactRepository->add($contact, true);
 
-        return $this->successJsonResponse($contact->getId(), 201);
+        return $this->successJsonResponse($contact->asArray(), 201);
     }
 
     #[Route('/contact/{id}', name: 'contact_update', methods: ["PUT"])]
@@ -86,5 +84,12 @@ class ContactController extends BaseController
         $contactRepository->remove($contact, true);
 
         return $this->successJsonResponse($id, 204);
+    }
+
+    private function _getSearchParams($request): array {
+        $paramKeys = ['name', 'page', 'size'];
+        $params = array_merge(array_fill_keys($paramKeys, null), $request->query->all());
+
+        return array_filter($params);
     }
 }
