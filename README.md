@@ -1,6 +1,6 @@
 # Phone Book API (phone-book-api)
 
-This is a RESTful API based on Symfony `6.1` with `JWT` authentication strategy that serves the following actions to use by frontend phone-book-ui project:
+This is a `RESTful API` based on Symfony `6.1` with `JWT` authentication strategy that serves the following actions to use by frontend phone-book-ui project:
 
 ## Supported actions in `phone-book-api`
 
