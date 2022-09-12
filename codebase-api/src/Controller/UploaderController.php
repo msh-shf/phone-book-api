@@ -9,10 +9,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UploaderController extends BaseController
 {
-    #[Route('/upload', name: 'upload', methods: ["POST"])]
-    public function index(Request $request, FileUploader $fileUploader): JsonResponse
+    #[Route('/upload/image', name: 'upload_image', methods: ["POST"])]
+    public function image(Request $request, FileUploader $fileUploader): JsonResponse
     {
-        if($fileName = $fileUploader->upload($request->files->get('image'))) {
+        if($fileName = $fileUploader->upload($request->files->get('image'), $path = 'images')) {
             return $this->successJsonResponse($fileName);
         } else {
             return $this->errorJsonResponse('An error occurred!', 400);

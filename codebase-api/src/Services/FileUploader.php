@@ -10,32 +10,32 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class FileUploader
 {
-    private $targetDirectory;
+    private $publicDirectory;
     private $slugger;
 
     public function __construct(KernelInterface $kernel, SluggerInterface $slugger)
     {
-        $this->targetDirectory = $kernel->getProjectDir() . '/public';
+        $this->publicDirectory = $kernel->getProjectDir() . '/public';
         $this->slugger = $slugger;
     }
 
-    public function upload(UploadedFile $file)
+    public function upload(UploadedFile $file, $relativePath)
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
         $fileName = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
 
         try {
-            $file->move($this->getTargetDirectory(), $fileName);
+            $file->move($this->getTargetDirectory($relativePath), $fileName);
         } catch (FileException $e) {
             return null;
         }
 
-        return $fileName;
+        return $relativePath . '/' . $fileName;
     }
 
-    public function getTargetDirectory()
+    public function getTargetDirectory($relativePath)
     {
-        return $this->targetDirectory;
+        return $this->publicDirectory . '/' . $relativePath;
     }
 }
